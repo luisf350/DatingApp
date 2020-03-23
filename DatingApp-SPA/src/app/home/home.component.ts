@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
+import { MessageService } from "primeng/api";
 
 @Component({
   selector: "app-home",
@@ -9,7 +10,10 @@ import { HttpClient } from "@angular/common/http";
 export class HomeComponent implements OnInit {
   registerMode = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -19,5 +23,19 @@ export class HomeComponent implements OnInit {
 
   cancelRegister(registerMode: boolean) {
     this.registerMode = registerMode;
+  }
+
+  mostrarMensaje() {
+    this.messageService.add({
+      severity: "success",
+      summary: "Service Message",
+      detail: "Via MessageService"
+    });
+
+    this.messageService.add({
+      severity: "error",
+      summary: "Error Message",
+      detail: "Validation failed"
+    });
   }
 }
