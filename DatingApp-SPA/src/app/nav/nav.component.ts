@@ -9,7 +9,7 @@ import { AuthService } from '../services/auth.service';
 export class NavComponent implements OnInit {
   model: any = {};
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {}
 
@@ -30,6 +30,5 @@ export class NavComponent implements OnInit {
   logOut() {
     localStorage.removeItem('token');
     console.log('logged out');
-    
   }
 }
