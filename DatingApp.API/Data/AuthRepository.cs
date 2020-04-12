@@ -1,6 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using DatingApp.API.Models;
+using DatingApp.API.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Data
@@ -23,7 +23,7 @@ namespace DatingApp.API.Data
                 return null;
             }
 
-            if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            if (!Util.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
                 return null;
             }
@@ -34,7 +34,7 @@ namespace DatingApp.API.Data
         public async Task<User> Register(User user, string password)
         {
             byte[] passwordHash, passwordSalt;
-            CreatePasswordHash(password, out passwordHash, out passwordSalt);
+            Util.CreatePasswordHash(password, out passwordHash, out passwordSalt);
 
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
@@ -49,35 +49,6 @@ namespace DatingApp.API.Data
         {
             return await context.Users.AnyAsync(x => x.UserName == userName);
         }
-
-        #region Private Methods
-
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
-            {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            }
-        }
-
-        private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
-        {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
-            {
-                var computeHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computeHash.Length; i++)
-                {
-                    if (computeHash[i] != passwordHash[i])
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
-
-        #endregion
 
     }
 }
