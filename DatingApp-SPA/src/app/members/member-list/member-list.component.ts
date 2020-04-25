@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { User } from "../../models/user";
 import { UserService } from "../../services/user.service";
 import { MessageService } from "primeng/api";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: "app-member-list",
@@ -13,25 +14,14 @@ export class MemberListComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private messageService: MessageService
+    private messageService: MessageService, private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadUsers();
+    this.route.data.subscribe(
+      data => {
+        this.users = data["users"];
+      });
   }
-
-  loadUsers() {
-    this.userService.getUsers().subscribe(
-      (next) => {
-        this.users = [...next];
-      },
-      (error) => {
-        this.messageService.add({
-          severity: "error",
-          summary: "Load Users",
-          detail: error
-        });
-      }
-    );
-  }
+  
 }

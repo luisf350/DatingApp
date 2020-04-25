@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { User } from "src/app/models/user";
-import { UserService } from "src/app/services/user.service";
-import { MessageService } from "primeng/api/public_api";
+import { MessageService } from "primeng/api";
 import { ActivatedRoute } from "@angular/router";
+import { User } from '../../models/user';
+// import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
 
 @Component({
   selector: "app-member-detail",
@@ -11,30 +11,41 @@ import { ActivatedRoute } from "@angular/router";
 })
 export class MemberDetailComponent implements OnInit {
   user: User;
+  // galleryOptions: NgxGalleryOptions[];
+  // galleryImages: NgxGalleryImage[];
 
   constructor(
-    private userService: UserService,
-    private messageService: MessageService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.loadUser();
-    
+    this.route.data.subscribe(
+      data => {
+        this.user = data["user"];
+      });
+      // this.galleryOptions = [
+      //   {
+      //     width: "500px",
+      //     height: "500px",
+      //     imagePercent: 100,
+      //     thumbnailsColumns: 4,
+      //     imageAnimation: NgxGalleryAnimation.Slide,
+      //     preview: false
+      //   }
+      // ];
+      // this.galleryImages = this.getImages();
   }
 
-  loadUser() {
-    this.userService.getUser(+this.route.snapshot.params.id).subscribe(
-      (response) => {
-        this.user = response;
-      },
-      (error) => {
-        this.messageService.add({
-          severity: "error",
-          summary: "Load Users",
-          detail: error,
-        });
-      }
-    );
+  getImages() {
+    const imagesUrl = [];
+    this.user.photos.forEach(photo => {
+      imagesUrl.push({
+        small: photo.url,
+        medium: photo.url,
+        big: photo.url,
+        description: photo.description
+      });
+    });
+    return imagesUrl;
   }
 }
