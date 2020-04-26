@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../services/auth.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-nav",
@@ -9,7 +10,7 @@ import { AuthService } from "../services/auth.service";
 export class NavComponent implements OnInit {
   model: any = {};
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
@@ -27,6 +28,10 @@ export class NavComponent implements OnInit {
   loggedIn() {
     const token = localStorage.getItem("token");
     return !!token;
+  }
+
+  editProfile(){
+    this.router.navigate(['/member/edit']);
   }
 
   logOut() {

@@ -10,8 +10,10 @@ import { ToastModule } from "primeng/toast";
 import { MessageService } from "primeng/api";
 import { DropdownModule } from "primeng/dropdown";
 import { TabViewModule } from "primeng/tabview";
+import { MessagesModule } from "primeng/messages";
+import { MessageModule } from "primeng/message";
 
-// import { NgxGalleryModule } from 'ngx-gallery';
+import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 
 import { AppComponent } from "./app.component";
 import { NavComponent } from "./nav/nav.component";
@@ -26,6 +28,9 @@ import { MemberCardComponent } from "./members/member-card/member-card.component
 import { MemberDetailComponent } from "./members/member-detail/member-detail.component";
 import { MemberDetailResolver } from "./resolvers/member-detail.resolver";
 import { MemberListResolver } from "./resolvers/member-list.resolver";
+import { MemberEditComponent } from "./members/member-edit/member-edit.component";
+import { MemberEditResolver } from "./resolvers/member-edit.resolver";
+import { PreventUnsavedChanges } from './guards/prevent-unsaved-changes.guard';
 
 export function tokenGetter() {
   return localStorage.getItem("token");
@@ -42,6 +47,7 @@ export function tokenGetter() {
     MessagesComponent,
     MemberCardComponent,
     MemberDetailComponent,
+    MemberEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,8 +57,10 @@ export function tokenGetter() {
     ToastModule,
     DropdownModule,
     TabViewModule,
+    MessagesModule,
+    MessageModule,
     RouterModule.forRoot(appRoutes),
-    // NgxGalleryModule,
+    NgxGalleryModule, 
     JwtModule.forRoot({
       config: {
         tokenGetter,
@@ -66,6 +74,8 @@ export function tokenGetter() {
     MessageService,
     MemberDetailResolver,
     MemberListResolver,
+    MemberEditResolver,
+    PreventUnsavedChanges
   ],
   bootstrap: [AppComponent],
 })

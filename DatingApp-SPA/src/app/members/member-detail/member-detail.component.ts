@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { MessageService } from "primeng/api";
 import { ActivatedRoute } from "@angular/router";
 import { User } from '../../models/user';
-// import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
+import { NgxGalleryImage, NgxGalleryOptions, NgxGalleryAnimation } from '@kolkov/ngx-gallery';
 
 @Component({
   selector: "app-member-detail",
@@ -11,8 +11,8 @@ import { User } from '../../models/user';
 })
 export class MemberDetailComponent implements OnInit {
   user: User;
-  // galleryOptions: NgxGalleryOptions[];
-  // galleryImages: NgxGalleryImage[];
+  galleryOptions: NgxGalleryOptions[];
+  galleryImages: NgxGalleryImage[];
 
   constructor(
     private route: ActivatedRoute
@@ -23,17 +23,17 @@ export class MemberDetailComponent implements OnInit {
       data => {
         this.user = data["user"];
       });
-      // this.galleryOptions = [
-      //   {
-      //     width: "500px",
-      //     height: "500px",
-      //     imagePercent: 100,
-      //     thumbnailsColumns: 4,
-      //     imageAnimation: NgxGalleryAnimation.Slide,
-      //     preview: false
-      //   }
-      // ];
-      // this.galleryImages = this.getImages();
+      this.galleryOptions = [
+        {
+          width: "500px",
+          height: "500px",
+          imagePercent: 100,
+          thumbnailsColumns: 4,
+          imageAnimation: NgxGalleryAnimation.Slide,
+          preview: false
+        }
+      ];
+      this.galleryImages = this.getImages();
   }
 
   getImages() {
